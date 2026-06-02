@@ -1,0 +1,646 @@
+/* --- Design System & Reset (Dark Grey UI Theme) --- */
+:root {
+    --primary-color: #3b82f6; /* Vibrant App Blue */
+    --secondary-color: #0f172a; /* Deepest Midnight Slate */
+    --bg-color: #d1d5db; /* Light Grey Body Background */
+    --card-bg: #334155; /* Medium Lighter Grey for Card Backgrounds */
+    --details-bg: #1e293b; /* Dark Grey for text section inside cards */
+    --text-main: #f8fafc; /* Crisp White Text */
+    --text-muted: #94a3b8; /* Soft Light Grey Text */
+    --accent-green: #10b981;
+    --border-subtle: #475569;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--border-subtle);
+    color: var(--text-main);
+    padding-bottom: 60px;
+}
+
+/* --- Navigation Header --- */
+header {
+    background: var(--secondary-color);
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.logo {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    letter-spacing: -0.5px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.06);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.desktop-header-nav {
+    display: none;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.desktop-nav-btn {
+    padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    color: #f8fafc;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.desktop-nav-btn:hover {
+    background: rgba(59,130,246,0.22);
+    transform: translateY(-1px);
+}
+
+.header-icon {
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+/* --- Company Hero Introduction Section --- */
+.company-hero {
+    padding: 40px 20px 10px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.company-hero h1 {
+    font-size: 1.75rem;
+    color: #ffffff;
+    margin-bottom: 12px;
+    font-weight: 800;
+}
+
+.company-hero p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.search-container {
+    padding: 20px 20px 0;
+}
+
+.search-panel {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 22px;
+    padding: 18px 20px;
+    box-shadow: 0 16px 40px rgba(15,23,42,0.12);
+}
+
+.search-hint {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.search-input.visible-search {
+    width: 100%;
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(15,23,42,0.9);
+    color: #ffffff;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.22);
+}
+
+.search-input.visible-search::placeholder {
+    color: #a5b4fc;
+}
+
+/* --- App-Style Category Filter --- */
+.category-container {
+    display: flex;
+    gap: 10px;
+    padding: 25px 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+}
+
+.category-container::-webkit-scrollbar {
+    display: none;
+}
+
+.category-pill {
+    background: var(--card-bg);
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    border: 1px solid var(--border-subtle);
+    transition: all 0.2s ease;
+}
+
+.category-pill.active, .category-pill:hover {
+    background: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+}
+
+/* --- Property Showcase Grid --- */
+main {
+    padding: 0 20px 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+/* --- Interactive Property Card --- */
+.property-card {
+    background: linear-gradient(180deg, rgba(15,23,42,0.96), rgba(51,65,85,0.92));
+    border-radius: 24px;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column; /* Stacks image wrapper on top of text details */
+}
+
+.property-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 50px rgba(15,23,42,0.3);
+    border-color: rgba(59,130,246,0.4);
+}
+
+.badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+    z-index: 10;
+}
+
+.rent-badge {
+    background: rgba(15, 23, 42, 0.6);
+}
+
+.sale-badge {
+    background: rgba(16, 185, 129, 0.75);
+}
+
+/* --- Image Boundary Hard Stop fixes --- */
+.property-image-wrapper {
+    width: 100%;
+    height: 190px; /* Forces image window layout box dimension scale limit */
+    overflow: hidden;
+    position: relative;
+}
+
+.property-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease;
+}
+
+.property-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.property-card:hover .property-image {
+    transform: scale(1.05); /* Smooth app-like image zoom on card hover */
+}
+
+/* Fallback colors matching your preview block shapes */
+.placeholder-rent { background-color: #2563eb; }
+.placeholder-apt { background-color: #0891b2; }
+.placeholder-land { background-color: #16a34a; }
+.placeholder-house { background-color: #ea580c; }
+
+/* Text Area Container styling below boundary */
+.property-details {
+    padding: 18px;
+    background: rgba(15,23,42,0.88);
+    flex-grow: 1; /* Ensures text wrapper takes up remaining height cleanly */
+}
+
+.save-btn {
+    width: 100%;
+    margin-top: 18px;
+    border-radius: 16px;
+    padding: 12px 14px;
+    border: 1px solid rgba(248,250,252,0.16);
+    background: rgba(59,130,246,0.12);
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.save-btn:hover {
+    background: rgba(59,130,246,0.24);
+    transform: translateY(-1px);
+}
+
+/* WhatsApp inquire button style */
+.inquire-btn {
+    width: 100%;
+    margin-top: 18px;
+    border-radius: 16px;
+    padding: 12px 14px;
+    border: none;
+    background: linear-gradient(90deg,#16a34a,#059669);
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.inquire-btn:hover { transform: translateY(-2px); opacity: 0.95 }
+
+/* Global search results box (used on homepage) */
+.global-results a { color: #a5b4fc; text-decoration: none; }
+.global-results { color: var(--text-muted); font-size: 0.95rem }
+
+.profile-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 22px;
+    padding: 22px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 20px 50px rgba(15,23,42,0.15);
+}
+
+.profile-tabs {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.profile-panel {
+    margin-top: 12px;
+}
+
+.profile-summary {
+    margin-top: 18px;
+    padding: 18px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.admin-contact {
+    margin-top: 24px;
+    padding: 18px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #e2e8f0;
+}
+
+.admin-contact h3 {
+    margin-bottom: 10px;
+}
+
+.admin-contact p,
+.admin-contact a {
+    color: #cbd5e1;
+    line-height: 1.7;
+}
+
+#accountError {
+    margin-top: 16px;
+    color: #f87171;
+    font-size: 0.95rem;
+}
+
+.price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #3b82f6;
+    margin-bottom: 6px;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.location {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+}
+
+.specs {
+    display: flex;
+    gap: 14px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 12px;
+}
+
+/* --- Global Panels and Overlays --- */
+.hidden {
+    display: none !important;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 250;
+}
+
+.overlay-content {
+    width: 100%;
+    max-width: 420px;
+    background: var(--secondary-color);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 24px;
+}
+
+.overlay-content h3 {
+    margin-bottom: 16px;
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+.search-input,
+.profile-form input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid var(--border-subtle);
+    background: #1e293b;
+    color: #f8fafc;
+    margin-bottom: 14px;
+}
+
+.search-input::placeholder,
+.profile-form input::placeholder {
+    color: #94a3b8;
+}
+
+.button {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: none;
+    background: var(--primary-color);
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.button.secondary {
+    background: rgba(255,255,255,0.08);
+    color: var(--text-main);
+}
+
+.button:hover {
+    background: #2563eb;
+}
+
+.button:focus {
+    outline: 2px solid rgba(59,130,246,0.55);
+    outline-offset: 2px;
+}
+
+.panel {
+   
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 24px;
+}
+
+/* Download panel without extra shadow or border (clean flat block) */
+.download-panel {
+    box-shadow: none !important;
+    border: none !important;
+    background: var(--card-bg) !important;
+}
+
+/* Page transition helper: fade pages in and out during navigation */
+html {
+    opacity: 0;
+    transition: opacity 320ms ease-in-out;
+}
+html.page-visible {
+    opacity: 1;
+}
+
+/* helper class for link clicks we want to animate */
+.link-fade {
+    cursor: pointer;
+}
+
+.panel h2,
+.panel h3 {
+    margin-bottom: 14px;
+    color: #ffffff;
+}
+
+.saved-list {
+    list-style: none;
+    margin-top: 12px;
+    padding: 0;
+}
+
+.saved-list li {
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+.profile-form label {
+    display: block;
+    margin-bottom: 6px;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+}
+
+.profile-form button {
+    margin-top: 8px;
+}
+
+/* --- Mobile Bottom Navigation --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--secondary-color);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+    z-index: 100;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.nav-item {
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+}
+
+/* --- Corporate Dark Footer Section --- */
+.company-footer {
+    background: var(--secondary-color);
+    color: #cbd5e1;
+    padding: 40px 20px 20px 20px;
+    margin-top: 40px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.footer-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.footer-section p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 30px auto 0 auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* --- Desktop Layout Optimization --- */
+@media (min-width: 768px) {
+    .bottom-nav {
+        display: none;
+    }
+    .desktop-header-nav {
+        display: flex;
+    }
+    header {
+        padding: 20px 40px;
+    }
+    .company-hero h1 {
+        font-size: 2.25rem;
+    }
+    .category-container {
+        justify-content: center;
+        padding: 25px 40px;
+    }
+    main {
+        padding: 20px 40px 60px 40px;
+    }
+    body {
+        padding-bottom: 0px;
+    }
+}
+

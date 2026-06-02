@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Saved Properties - Latrat Properties</title>
+    <link rel="icon" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .center-panel { max-width:720px; margin: 40px auto; }
+    </style>
+</head>
+<body>
+    <main class="center-panel panel">
+        <h1>Saved Properties</h1>
+        <div id="savedContent">
+            <p>Please sign in to view your saved properties.</p>
+            <p><a class="button" href="profile.html">Sign in / Create Account</a></p>
+        </div>
+    </main>
+
+    <script>
+        const STORAGE_USER = 'latratCurrentUser';
+        const STORAGE_SAVED = 'latratSavedItems';
+
+        function getCurrentUser(){ return JSON.parse(localStorage.getItem(STORAGE_USER) || 'null'); }
+        function getSavedStore(){ return JSON.parse(localStorage.getItem(STORAGE_SAVED) || '{}'); }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            document.documentElement.classList.add('page-visible');
+            const user = getCurrentUser();
+            const container = document.getElementById('savedContent');
+            if(!user){ return; }
+            const store = getSavedStore();
+            const items = store[user.email] || [];
+            if(!items.length){ container.innerHTML = '<p>No saved properties yet. Save listings from any page.</p><p><a class="button" href="index.html">Browse Listings</a></p>'; return; }
+            container.innerHTML = '<ul class="saved-list">' + items.map(it => `<li>${it}</li>`).join('') + '</ul>';
+        });
+    </script>
+</body>
+</html>

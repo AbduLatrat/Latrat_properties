@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land for Sale | Latrat Properties</title>
+    <link rel="icon" href="icon.png">
+    <style>
+        :root { --bg: #f8fafc; --card: #111827; --text: #f1f1f1; --accent: #047857; --border-subtle: #475569; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: var(--border-subtle); color: var(--text); min-height: 100vh; }
+        header { background: #0f172a; color: #f8fafc; padding: 22px 20px; display: flex; justify-content: space-between; align-items: center; }
+        header a { color: #bbf7d0; text-decoration: none; font-weight: 600; }
+        main { max-width: 1080px; margin: 28px auto 40px; padding: 0 20px; }
+        .intro { margin-bottom: 22px; }
+        .intro p { margin-top: 10px; color: #cbd5e1; line-height: 1.8; }
+        .property-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); justify-items: center; }
+        .property-card { width: 100%; max-width: 420px; background: #111827; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .property-card:hover { transform: translateY(-4px); box-shadow: 0 22px 40px rgba(15,23,42,0.18); }
+        .property-image { min-height: 210px; background-size: cover; background-position: center; }
+        .property-details { padding: 18px; }
+        .badge { display: inline-flex; padding: 8px 12px; background: rgba(16,185,129,0.18); color: #bbf7d0; border-radius: 999px; font-weight: 700; margin-bottom: 12px; }
+        .price { font-size: 1.3rem; font-weight: 700; color: #86efac; margin-bottom: 8px; }
+        .title { font-size: 1rem; font-weight: 700; color: #f8fafc; margin-bottom: 8px; }
+        .location { color: #94a3b8; display: block; margin-bottom: 14px; }
+        .specs { display: flex; flex-wrap: wrap; gap: 12px; color: #cbd5e1; font-size: 0.95rem; }
+        footer { text-align: center; color: #94a3b8; padding: 20px 0 30px; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; background: #10b981; color: #ffffff; border-radius: 16px; text-decoration: none; font-weight: 700; }
+        .button.inquire-btn { width: 100%; margin-top: 14px; padding: 12px 14px; border-radius: 16px; border: none; background: linear-gradient(90deg, #16a34a, #059669); color: #ffffff; font-weight: 700; cursor: pointer; transition: transform 0.2s ease, opacity 0.2s ease; }
+        .button.inquire-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Land for Sale</h1>
+        <a href="index.html">← Back Home</a>
+    </header>
+    <main>
+        <div class="intro">
+            <h2>Premium land plots for development and investment</h2>
+            <p>Secure prime parcels of land in quiet, fast-growing districts ready for housing or commercial development.</p>
+        </div>
+        <div class="property-grid">
+            <article class="property-card">
+                <div class="property-image" style="background-image:url('4.jpg')"></div>
+                <div class="property-details">
+                    <span class="badge">For Sale</span>
+                    <div class="price">$45,000</div>
+                    <div class="title">0.5 Acre Prime Development Land</div>
+                    <span class="location">📍 Green Valley</span>
+                    <div class="specs"><span>21,780 sqft</span><span>Residential</span></div>
+                    <button class="button inquire-btn" data-phone="256771895378" type="button">Inquire on WhatsApp</button>
+                </div>
+            </article>
+            <article class="property-card">
+                <div class="property-image" style="background-image:url('4.jpg')"></div>
+                <div class="property-details">
+                    <span class="badge">For Sale</span>
+                    <div class="price">$60,000</div>
+                    <div class="title">Scenic Hilltop Acreage</div>
+                    <span class="location">📍 Sunrise Ridge</span>
+                    <div class="specs"><span>1.2 Acres</span><span>Gentle Rise</span></div>
+                    <button class="button inquire-btn" data-phone="256771895378" type="button">Inquire on WhatsApp</button>
+                </div>
+            </article>
+            <article class="property-card">
+                <div class="property-image" style="background-image:url('4.jpg')"></div>
+                <div class="property-details">
+                    <span class="badge">For Sale</span>
+                    <div class="price">$36,000</div>
+                    <div class="title">Investor Plot Near Main Road</div>
+                    <span class="location">📍 Commerce Park</span>
+                    <div class="specs"><span>0.4 Acres</span><span>Commercial</span></div>
+                    <button class="button inquire-btn" data-phone="256771895378" type="button">Inquire on WhatsApp</button>
+                </div>
+            </article>
+        </div>
+    </main>
+    <footer>
+        <p>Invest in land that offers long-term growth and flexible development options.</p>
+    </footer>
+    <script>
+        const inquireButtons = document.querySelectorAll('.inquire-btn');
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('latratCurrentUser') || 'null');
+        }
+        function getSavedStore() {
+            return JSON.parse(localStorage.getItem('latratSavedItems') || '{}');
+        }
+        function saveSaved(user, title) {
+            const store = getSavedStore();
+            const saved = store[user.email] || [];
+            if (!saved.includes(title)) {
+                saved.push(title);
+                store[user.email] = saved;
+                localStorage.setItem('latratSavedItems', JSON.stringify(store));
+                return true;
+            }
+            return false;
+        }
+        inquireButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.property-card');
+                const title = card.querySelector('.title').innerText;
+                const phone = this.dataset.phone || '256771895378';
+                const text = encodeURIComponent(`Hello, I'm interested in "${title}" listed on ${window.location.pathname.replace(/.*\//,'')}. Please share details.`);
+                window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.documentElement.classList.add('page-visible');
+            document.querySelectorAll('a[href]').forEach(a => {
+                const href = a.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('mailto:') || a.hasAttribute('download')) return;
+                a.addEventListener('click', function(e) {
+                    const link = this.getAttribute('href');
+                    if (!link) return;
+                    e.preventDefault();
+                    document.documentElement.classList.remove('page-visible');
+                    setTimeout(() => window.location.href = link, 320);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
