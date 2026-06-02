@@ -28,6 +28,10 @@
         .back-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; background: #f43f5e; color: #ffffff; border-radius: 16px; text-decoration: none; font-weight: 700; }
         .button.inquire-btn { width: 100%; margin-top: 14px; padding: 12px 14px; border-radius: 16px; border: none; background: linear-gradient(90deg, #16a34a, #059669); color: #ffffff; font-weight: 700; cursor: pointer; transition: transform 0.2s ease, opacity 0.2s ease; }
         .button.inquire-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        @media (max-width: 767px) {
+            .property-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .property-card { max-width: none; }
+        }
     </style>
 </head>
 <body>
@@ -163,6 +167,24 @@
                 });
             });
         });
+    </script>
+    <script>
+        function handleFindFragment() {
+            const h = window.location.hash || '';
+            if (!h.startsWith('#find=')) return;
+            const q = decodeURIComponent(h.replace('#find=','')).toLowerCase();
+            const candidates = document.querySelectorAll('.title, .location, .specs, .property-details');
+            for (const el of candidates) {
+                if (!el || !el.innerText) continue;
+                if (el.innerText.toLowerCase().includes(q)) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.classList.add('search-highlight');
+                    setTimeout(() => el.classList.remove('search-highlight'), 5000);
+                    return;
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', handleFindFragment);
     </script>
 </body>
 </html>

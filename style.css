@@ -517,6 +517,14 @@ html.page-visible {
     color: #ffffff;
 }
 
+/* Highlight used to indicate a found search result after navigation */
+.search-highlight {
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(250,204,21,0.06), 0 0 0 3px rgba(250,204,21,0.06) inset;
+    background: linear-gradient(90deg, rgba(250,204,21,0.04), rgba(250,204,21,0.02));
+    transition: box-shadow 220ms ease, background 220ms ease;
+}
+
 .saved-list {
     list-style: none;
     margin-top: 12px;
@@ -619,6 +627,38 @@ html.page-visible {
 }
 
 /* --- Desktop Layout Optimization --- */
+/* Mobile: make category container a 2x2 grid instead of a horizontal scroller */
+@media (max-width: 767px) {
+    .category-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 18px 16px;
+        overflow-x: visible;
+        white-space: normal;
+    }
+    .category-pill {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        white-space: normal;
+    }
+}
+
+/* Mobile: show two property cards per row for better density */
+@media (max-width: 767px) {
+    .property-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .property-card {
+        max-width: none;
+    }
+}
+
 @media (min-width: 768px) {
     .bottom-nav {
         display: none;

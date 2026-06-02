@@ -108,5 +108,24 @@
             });
         });
     </script>
+    <script>
+        // handle #find= fragment from global search
+        function handleFindFragment() {
+            const h = window.location.hash || '';
+            if (!h.startsWith('#find=')) return;
+            const q = decodeURIComponent(h.replace('#find=','')).toLowerCase();
+            const candidates = document.querySelectorAll('.title, .location, .specs, .property-details');
+            for (const el of candidates) {
+                if (!el || !el.innerText) continue;
+                if (el.innerText.toLowerCase().includes(q)) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.classList.add('search-highlight');
+                    setTimeout(() => el.classList.remove('search-highlight'), 5000);
+                    return;
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', handleFindFragment);
+    </script>
 </body>
 </html>
