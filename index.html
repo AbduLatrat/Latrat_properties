@@ -616,6 +616,39 @@
         </div>
     </footer>
 
+    <!-- Visitor counter (uses CountAPI: https://countapi.xyz) -->
+    <div id="visitorCounter" style="position:fixed;right:12px;bottom:12px;background:#0b1220;color:#fff;padding:8px 10px;border-radius:8px;font-size:14px;display:none;z-index:9999;box-shadow:0 6px 18px rgba(0,0,0,0.35)">
+        <strong>Visitors:</strong>
+        <span id="visitorCount">...</span>
+    </div>
+
+    <script>
+        (function(){
+            // Show admin badge when ?admin=1 (or ?admin=true) is present
+            const params = new URLSearchParams(window.location.search);
+            const isAdmin = params.get('admin') === '1' || params.get('admin') === 'true';
+
+            const ns = 'latrat-properties'; // namespace (site-wide)
+            const key = 'visits';
+            const counterEl = document.getElementById('visitorCounter');
+            const valueEl = document.getElementById('visitorCount');
+
+            if (isAdmin && counterEl) counterEl.style.display = 'block';
+
+            // Increment hit and read back value (CountAPI returns JSON { value: <number> })
+            fetch(`https://api.countapi.xyz/hit/${ns}/${key}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (!data) return;
+                    const v = (data.value !== undefined) ? data.value : data;
+                    if (valueEl) valueEl.textContent = v;
+                })
+                .catch(err => {
+                    console.warn('Visitor counter failed', err);
+                    if (valueEl) valueEl.textContent = 'n/a';
+                });
+        })();
+    </script>
 </body>
 </html>
 
