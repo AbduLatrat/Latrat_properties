@@ -17,7 +17,7 @@
             <div class="logo">LATRAT PROPERTIES</div>
         </div>
         <div class="header-controls">
-            <div class="header-icon">🔔</div>
+            <button id="adminBell" title="Admin" class="header-icon" style="background:transparent;border:0;cursor:pointer;font-size:20px">🔔</button>
         </div>
     </header>
 
@@ -647,6 +647,166 @@
                     console.warn('Visitor counter failed', err);
                     if (valueEl) valueEl.textContent = 'n/a';
                 });
+        })();
+    </script>
+
+    <!-- Admin modal + dashboard -->
+    <div id="adminModal" class="modal" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:10000">
+        <div style="background:#fff;color:#111;padding:18px;border-radius:10px;max-width:360px;width:100%">
+            <h3 style="margin-top:0">Admin Login</h3>
+            <form id="adminLoginForm">
+                <label>Username</label>
+                <input id="adminUser" type="text" value="Latrat" style="width:100%;padding:8px;margin:6px 0" />
+                <label>Password</label>
+                <input id="adminPass" type="password" value="Ehsan256" style="width:100%;padding:8px;margin:6px 0" />
+                <div id="adminMsg" style="color:#b91c1c;margin:8px 0;min-height:18px"></div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+                    <button type="button" id="adminClose" class="button secondary">Cancel</button>
+                    <button type="submit" class="button">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminDashboard" style="display:none;position:fixed;inset:8% 8% 8% 8%;z-index:10001;background:#fff;color:#111;padding:18px;border-radius:10px;overflow:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+            <h3 style="margin:0">Admin Dashboard</h3>
+            <div>
+                <button id="adminRefresh" class="button secondary">Refresh</button>
+                <button id="adminLogout" class="button">Logout</button>
+            </div>
+        </div>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+            <div style="padding:12px;border-radius:8px;background:#f3f4f6"><strong>Total visits</strong><div id="statVisits">...</div></div>
+            <div style="padding:12px;border-radius:8px;background:#f3f4f6"><strong>Unique devices</strong><div id="statUnique">...</div></div>
+            <div style="padding:12px;border-radius:8px;background:#f3f4f6"><strong>APK downloads</strong><div id="statApk">...</div></div>
+            <div style="padding:12px;border-radius:8px;background:#f3f4f6"><strong>Unique APK downloaders</strong><div id="statApkUnique">...</div></div>
+        </div>
+        <section style="margin-top:12px">
+            <h4 style="margin:6px 0">This device (sample)</h4>
+            <pre id="deviceSample" style="background:#111;color:#e5e7eb;padding:10px;border-radius:6px;overflow:auto;max-height:220px">loading...</pre>
+            <p style="color:#374151;font-size:13px">Note: Full global device logs require a backend. This panel shows aggregated counts and this client’s sample details.</p>
+        </section>
+    </div>
+
+    <script>
+        (function(){
+            const ADMIN_USER = 'Latrat';
+            const ADMIN_PASS = 'Ehsan256';
+
+            const adminBell = document.getElementById('adminBell');
+            const adminModal = document.getElementById('adminModal');
+            const adminLoginForm = document.getElementById('adminLoginForm');
+            const adminClose = document.getElementById('adminClose');
+            const adminMsg = document.getElementById('adminMsg');
+            const adminDashboard = document.getElementById('adminDashboard');
+            const adminLogout = document.getElementById('adminLogout');
+            const adminRefresh = document.getElementById('adminRefresh');
+
+            function openLogin() {
+                adminMsg.textContent = '';
+                adminModal.style.display = 'flex';
+                document.getElementById('adminUser').focus();
+            }
+
+            function closeLogin() {
+                adminModal.style.display = 'none';
+            }
+
+            adminBell && adminBell.addEventListener('click', openLogin);
+            adminClose && adminClose.addEventListener('click', closeLogin);
+
+            function showAdminDashboard() {
+                closeLogin();
+                adminDashboard.style.display = 'block';
+                loadAdminStats();
+                renderDeviceSample();
+            }
+
+            adminLoginForm && adminLoginForm.addEventListener('submit', function(e){
+                e.preventDefault();
+                const user = document.getElementById('adminUser').value.trim();
+                const pass = document.getElementById('adminPass').value;
+                if (user === ADMIN_USER && pass === ADMIN_PASS) {
+                    showAdminDashboard();
+                } else {
+                    adminMsg.textContent = 'This is for admin use only.';
+                }
+            });
+
+            adminLogout && adminLogout.addEventListener('click', function(){
+                adminDashboard.style.display = 'none';
+            });
+
+            adminRefresh && adminRefresh.addEventListener('click', function(){
+                loadAdminStats();
+            });
+
+            // Lightweight tracking helpers
+            function getCount(ns, key) {
+                return fetch(`https://api.countapi.xyz/get/${ns}/${key}`).then(r => r.json()).then(j => j && j.value !== undefined ? j.value : 0).catch(()=>0);
+            }
+
+            function loadAdminStats() {
+                const ns = 'latrat-properties';
+                Promise.all([
+                    getCount(ns, 'visits'),
+                    getCount(ns, 'unique_visitors'),
+                    getCount(ns, 'apk_downloads'),
+                    getCount(ns, 'unique_apk_downloaders')
+                ]).then(([visits, unique, apk, apkUnique]) => {
+                    document.getElementById('statVisits').textContent = visits;
+                    document.getElementById('statUnique').textContent = unique;
+                    document.getElementById('statApk').textContent = apk;
+                    document.getElementById('statApkUnique').textContent = apkUnique;
+                });
+            }
+
+            function renderDeviceSample() {
+                const id = localStorage.getItem('latrat_uuid') || 'unknown';
+                const ua = navigator.userAgent || 'unknown';
+                const time = new Date().toISOString();
+                const apkFlag = localStorage.getItem('latrat_apk_downloaded') ? 'Yes' : 'No';
+                const sample = { id, ua, time, apkDownloaded: apkFlag };
+                document.getElementById('deviceSample').textContent = JSON.stringify(sample, null, 2);
+            }
+
+            // Unique device tracking: if first visit on this browser, increment unique_visitors
+            (function(){
+                try {
+                    const ns = 'latrat-properties';
+                    if (!localStorage.getItem('latrat_uuid')) {
+                        const uuid = 'id-' + Math.random().toString(36).slice(2,12);
+                        localStorage.setItem('latrat_uuid', uuid);
+                        fetch(`https://api.countapi.xyz/hit/${ns}/unique_visitors`).catch(()=>{});
+                    }
+                } catch(e) {}
+            })();
+
+            // Replace APK download link handler to increment apk counts
+            (function(){
+                const apkLink = document.querySelector('a[download][href$=".apk"]');
+                if (!apkLink) return;
+                apkLink.id = 'apkDownloadBtn';
+                apkLink.addEventListener('click', function(e){
+                    e.preventDefault();
+                    const ns = 'latrat-properties';
+                    fetch(`https://api.countapi.xyz/hit/${ns}/apk_downloads`).catch(()=>{});
+                    if (!localStorage.getItem('latrat_apk_downloaded')) {
+                        localStorage.setItem('latrat_apk_downloaded', '1');
+                        fetch(`https://api.countapi.xyz/hit/${ns}/unique_apk_downloaders`).catch(()=>{});
+                    }
+                    // start download
+                    const href = this.getAttribute('href');
+                    const a = document.createElement('a');
+                    a.href = href;
+                    a.download = this.getAttribute('download') || '';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                });
+            })();
+
         })();
     </script>
 </body>
