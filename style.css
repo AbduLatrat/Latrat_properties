@@ -497,6 +497,126 @@ main {
     background: var(--card-bg) !important;
 }
 
+/* Admin modal and glass dashboard cards */
+.admin-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8, 15, 28, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+}
+
+.admin-panel {
+    width: min(420px, calc(100% - 32px));
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 32px 80px rgba(8, 15, 28, 0.35);
+    border-radius: 24px;
+    padding: 26px;
+}
+
+.admin-panel h3 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    font-size: 1.4rem;
+    color: #eff6ff;
+}
+
+.admin-panel label {
+    display: block;
+    margin-top: 12px;
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+.admin-panel input {
+    width: 100%;
+    padding: 14px 16px;
+    margin-top: 8px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06);
+    color: #f8fafc;
+}
+
+.admin-panel form {
+    display: grid;
+    gap: 12px;
+}
+
+.admin-dashboard {
+    display: none;
+    position: fixed;
+    inset: 8% 6% 8% 6%;
+    z-index: 10001;
+    background: rgba(15, 23, 42, 0.98);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 40px 100px rgba(8, 15, 28, 0.45);
+    border-radius: 30px;
+    overflow: auto;
+    padding: 28px;
+}
+
+.admin-dashboard__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-dashboard__title {
+    margin: 0;
+    font-size: 1.6rem;
+    color: #e2e8f0;
+}
+
+.admin-dashboard__cards {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.glass-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    backdrop-filter: blur(18px);
+    border-radius: 24px;
+    padding: 22px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.glass-card strong {
+    font-size: 0.95rem;
+    color: #c7d2fe;
+    letter-spacing: 0.02em;
+}
+
+.glass-card div {
+    margin-top: 16px;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #eff6ff;
+}
+
+.admin-dashboard__note {
+    margin-top: 24px;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 16px;
+    border-radius: 18px;
+}
+
 /* Page transition helper: fade pages in and out during navigation */
 html {
     opacity: 0;

@@ -651,16 +651,16 @@
     </script>
 
     <!-- Admin modal + dashboard -->
-    <div id="adminModal" class="modal" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:10000">
-        <div style="background:#fff;color:#111;padding:18px;border-radius:10px;max-width:360px;width:100%">
-            <h3 style="margin-top:0">Admin Login</h3>
+    <div id="adminModal" class="admin-modal">
+        <div class="admin-panel">
+            <h3>Admin Login</h3>
             <form id="adminLoginForm">
                 <label>Username</label>
-                <input id="adminUser" type="text" value="Latrat" style="width:100%;padding:8px;margin:6px 0" />
+                <input id="adminUser" type="text" />
                 <label>Password</label>
-                <input id="adminPass" type="password" value="Ehsan256" style="width:100%;padding:8px;margin:6px 0" />
-                <div id="adminMsg" style="color:#b91c1c;margin:8px 0;min-height:18px"></div>
-                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+                <input id="adminPass" type="password" />
+                <div id="adminMsg" style="color:#fca5a5;margin-top:6px;min-height:20px"></div>
+                <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
                     <button type="button" id="adminClose" class="button secondary">Cancel</button>
                     <button type="submit" class="button">Login</button>
                 </div>
@@ -668,25 +668,22 @@
         </div>
     </div>
 
-    <div id="adminDashboard" style="display:none;position:fixed;inset:8% 8% 8% 8%;z-index:10001;background:#fff;color:#111;padding:18px;border-radius:10px;overflow:auto">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-            <h3 style="margin:0">Admin Dashboard</h3>
-            <div>
+    <div id="adminDashboard" class="admin-dashboard">
+        <div class="admin-dashboard__header">
+            <h3 class="admin-dashboard__title">Admin Dashboard</h3>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
                 <button id="adminRefresh" class="button secondary">Refresh</button>
                 <button id="adminLogout" class="button">Logout</button>
             </div>
         </div>
-        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
-            <div style="padding:12px;border-radius:8px;background:#f3f4f6"><strong>Total visits</strong><div id="statVisits">...</div></div>
-            <div style="padding:12px;border-radius:8px;background:#f3f4f6"><strong>Unique devices</strong><div id="statUnique">...</div></div>
-            <div style="padding:12px;border-radius:8px;background:#f3f4f6"><strong>APK downloads</strong><div id="statApk">...</div></div>
-            <div style="padding:12px;border-radius:8px;background:#f3f4f6"><strong>Unique APK downloaders</strong><div id="statApkUnique">...</div></div>
+        <div class="admin-dashboard__cards">
+            <div class="glass-card"><strong>Total visits</strong><div id="statVisits">...</div></div>
+            <div class="glass-card"><strong>Unique devices</strong><div id="statUnique">...</div></div>
+            <div class="glass-card"><strong>APK downloads</strong><div id="statApk">...</div></div>
         </div>
-        <section style="margin-top:12px">
-            <h4 style="margin:6px 0">This device (sample)</h4>
-            <pre id="deviceSample" style="background:#111;color:#e5e7eb;padding:10px;border-radius:6px;overflow:auto;max-height:220px">loading...</pre>
-            <p style="color:#374151;font-size:13px">Note: Full global device logs require a backend. This panel shows aggregated counts and this client’s sample details.</p>
-        </section>
+        <div class="admin-dashboard__note">
+            Collected analytics are stored as aggregate counters on CountAPI. Browser-specific device markers are kept locally in the visitor's browser via localStorage to track unique visits and APK download state. Full global device logs require a backend service; this dashboard shows aggregate visit and download counts only.
+        </div>
     </div>
 
     <script>
@@ -720,7 +717,6 @@
                 closeLogin();
                 adminDashboard.style.display = 'block';
                 loadAdminStats();
-                renderDeviceSample();
             }
 
             adminLoginForm && adminLoginForm.addEventListener('submit', function(e){
@@ -752,23 +748,12 @@
                 Promise.all([
                     getCount(ns, 'visits'),
                     getCount(ns, 'unique_visitors'),
-                    getCount(ns, 'apk_downloads'),
-                    getCount(ns, 'unique_apk_downloaders')
-                ]).then(([visits, unique, apk, apkUnique]) => {
+                    getCount(ns, 'apk_downloads')
+                ]).then(([visits, unique, apk]) => {
                     document.getElementById('statVisits').textContent = visits;
                     document.getElementById('statUnique').textContent = unique;
                     document.getElementById('statApk').textContent = apk;
-                    document.getElementById('statApkUnique').textContent = apkUnique;
                 });
-            }
-
-            function renderDeviceSample() {
-                const id = localStorage.getItem('latrat_uuid') || 'unknown';
-                const ua = navigator.userAgent || 'unknown';
-                const time = new Date().toISOString();
-                const apkFlag = localStorage.getItem('latrat_apk_downloaded') ? 'Yes' : 'No';
-                const sample = { id, ua, time, apkDownloaded: apkFlag };
-                document.getElementById('deviceSample').textContent = JSON.stringify(sample, null, 2);
             }
 
             // Unique device tracking: if first visit on this browser, increment unique_visitors
@@ -794,7 +779,6 @@
                     fetch(`https://api.countapi.xyz/hit/${ns}/apk_downloads`).catch(()=>{});
                     if (!localStorage.getItem('latrat_apk_downloaded')) {
                         localStorage.setItem('latrat_apk_downloaded', '1');
-                        fetch(`https://api.countapi.xyz/hit/${ns}/unique_apk_downloaders`).catch(()=>{});
                     }
                     // start download
                     const href = this.getAttribute('href');
