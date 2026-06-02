@@ -657,6 +657,27 @@ html.page-visible {
     .property-card {
         max-width: none;
     }
+    .price {
+        font-size: 1rem;
+    }
+    .title {
+        font-size: 0.85rem;
+    }
+    .location {
+        font-size: 0.75rem;
+    }
+    .specs {
+        font-size: 0.75rem;
+    }
+    .badge {
+        font-size: 0.65rem;
+    }
+    .property-image-wrapper {
+        height: 140px;
+    }
+    .property-details {
+        padding: 12px;
+    }
 }
 
 @media (min-width: 768px) {
