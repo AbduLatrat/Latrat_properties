@@ -195,6 +195,13 @@
         }
         document.addEventListener('DOMContentLoaded', handleFindFragment);
     </script>
+    <script>
+        (function(){
+            // Ensure device back button returns to home dashboard
+            try { history.pushState(null, null, location.href); } catch(e) {}
+            window.addEventListener('popstate', function() { window.location.href = 'index.html'; });
+        })();
+    </script>
 </body>
 </html>
 

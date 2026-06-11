@@ -56,7 +56,7 @@
                 <div class="property-image" style="background-image:url('6.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">Apartment</span>
-                    <div class="price">$950/mo</div>
+                    <div class="price">Shs 5,500,000/month</div>
                     <div class="title">Skyline View Studio</div>
                     <span class="location">📍 Downtown Blvd</span>
                     <div class="specs"><span>1 Bed</span><span>1 Bath</span><span>City View</span></div>
@@ -68,7 +68,7 @@
                 <div class="property-image" style="background-image:url('6.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">Apartment</span>
-                    <div class="price">$1,100/mo</div>
+                    <div class="price">Shs 3,500,000/month</div>
                     <div class="title">Executive Urban Loft</div>
                     <span class="location">📍 City Center</span>
                     <div class="specs"><span>2 Beds</span><span>1 Bath</span><span>Modern Kitchen</span></div>
@@ -80,7 +80,7 @@
                 <div class="property-image" style="background-image:url('6.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">Apartment</span>
-                    <div class="price">$1,100/mo</div>
+                    <div class="price">Shs 4,000,00/month</div>
                     <div class="title">Executive Urban Loft</div>
                     <span class="location">📍 City Center</span>
                     <div class="specs"><span>2 Beds</span><span>1 Bath</span><span>Modern Kitchen</span></div>
@@ -92,7 +92,7 @@
                 <div class="property-image" style="background-image:url('6.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">Apartment</span>
-                    <div class="price">$1,100/mo</div>
+                    <div class="price">Shs 4,000,000/month</div>
                     <div class="title">Executive Urban Loft</div>
                     <span class="location">📍 City Center</span>
                     <div class="specs"><span>2 Beds</span><span>1 Bath</span><span>Modern Kitchen</span></div>
@@ -104,7 +104,7 @@
                 <div class="property-image" style="background-image:url('6.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">Apartment</span>
-                    <div class="price">$1,100/mo</div>
+                    <div class="price">Shs 2,800,000/month</div>
                     <div class="title">Executive Urban Loft</div>
                     <span class="location">📍 City Center</span>
                     <div class="specs"><span>2 Beds</span><span>1 Bath</span><span>Modern Kitchen</span></div>
@@ -116,7 +116,7 @@
                 <div class="property-image" style="background-image:url('6.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">Apartment</span>
-                    <div class="price">$1,100/mo</div>
+                    <div class="price">Shs 3,000,000/month</div>
                     <div class="title">Executive Urban Loft</div>
                     <span class="location">📍 City Center</span>
                     <div class="specs"><span>2 Beds</span><span>1 Bath</span><span>Modern Kitchen</span></div>
@@ -191,6 +191,13 @@
             }
         }
         document.addEventListener('DOMContentLoaded', handleFindFragment);
+    </script>
+    <script>
+        (function(){
+            // Ensure device back button returns to home dashboard
+            try { history.pushState(null, null, location.href); } catch(e) {}
+            window.addEventListener('popstate', function() { window.location.href = 'index.html'; });
+        })();
     </script>
 </body>
 </html>

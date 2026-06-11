@@ -56,7 +56,7 @@
                 <div class="property-image" style="background-image:url('5.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">For Sale</span>
-                    <div class="price">$280,000</div>
+                    <div class="price">Shs 400,000,000</div>
                     <div class="title">Luxury 4-Bedroom Villa</div>
                     <span class="location">📍 Gated Community Dr</span>
                     <div class="specs"><span>4 Beds</span><span>3.5 Baths</span><span>High-End Finish</span></div>
@@ -67,7 +67,7 @@
                 <div class="property-image" style="background-image:url('5.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">For Sale</span>
-                    <div class="price">$320,000</div>
+                    <div class="price">Shs 450,000,000</div>
                     <div class="title">Modern Family Home</div>
                     <span class="location">📍 Lakeside Estate</span>
                     <div class="specs"><span>5 Beds</span><span>4 Baths</span><span>Pool Included</span></div>
@@ -78,7 +78,7 @@
                 <div class="property-image" style="background-image:url('5.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">For Sale</span>
-                    <div class="price">$245,000</div>
+                    <div class="price">Shs 800,000,000</div>
                     <div class="title">Cozy Suburban Residence</div>
                     <span class="location">📍 Oakwood Drive</span>
                     <div class="specs"><span>3 Beds</span><span>2 Baths</span><span>Garden Yard</span></div>
@@ -90,7 +90,7 @@
                 <div class="property-image" style="background-image:url('5.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">For Sale</span>
-                    <div class="price">$245,000</div>
+                    <div class="price">Shs 760,000,000</div>
                     <div class="title">Cozy Suburban Residence</div>
                     <span class="location">📍 Oakwood Drive</span>
                     <div class="specs"><span>3 Beds</span><span>2 Baths</span><span>Garden Yard</span></div>
@@ -102,7 +102,7 @@
                 <div class="property-image" style="background-image:url('6.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">For Sale</span>
-                    <div class="price">$245,000</div>
+                    <div class="price">Shs 670,000,000</div>
                     <div class="title">Cozy Suburban Residence</div>
                     <span class="location">📍 Oakwood Drive</span>
                     <div class="specs"><span>3 Beds</span><span>2 Baths</span><span>Garden Yard</span></div>
@@ -114,7 +114,7 @@
                 <div class="property-image" style="background-image:url('6.jpg')"></div>
                 <div class="property-details">
                     <span class="badge">For Sale</span>
-                    <div class="price">$245,000</div>
+                    <div class="price">Shs 590,000,000</div>
                     <div class="title">Cozy Suburban Residence</div>
                     <span class="location">📍 Oakwood Drive</span>
                     <div class="specs"><span>3 Beds</span><span>2 Baths</span><span>Garden Yard</span></div>
@@ -192,6 +192,13 @@
             }
         }
         document.addEventListener('DOMContentLoaded', handleFindFragment);
+    </script>
+    <script>
+        (function(){
+            // Ensure device back button returns to home dashboard
+            try { history.pushState(null, null, location.href); } catch(e) {}
+            window.addEventListener('popstate', function() { window.location.href = 'index.html'; });
+        })();
     </script>
 </body>
 </html>
