@@ -56,6 +56,33 @@
         <div id="globalSearchResults" class="global-results" style="max-width:900px;margin:12px auto 0;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,0.03);display:none"></div>
     </section>
    
+    <!-- Booking Form -->
+    <section class="panel" id="bookingSection">
+        <h2>Book a Viewing / Send Booking Info</h2>
+        <form id="bookingForm" class="profile-form">
+            <label for="bkName">Full name</label>
+            <input id="bkName" name="name" type="text" required />
+            <label for="bkEmail">Email address</label>
+            <input id="bkEmail" name="email" type="email" required />
+            <label for="bkPhone">Phone number</label>
+            <input id="bkPhone" name="phone" type="text" required />
+            <label for="bkProperty">Property (optional)</label>
+            <input id="bkProperty" name="property" type="text" />
+            <label for="bkMessage">Message</label>
+            <textarea id="bkMessage" name="message" rows="4" required></textarea>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+                <button class="button" type="submit">Send Booking Info</button>
+                <button id="syncBtn" class="button secondary" type="button">Sync / Push</button>
+                <div id="bookingStatus" style="margin-left:8px;color:#e5e7eb"></div>
+            </div>
+        </form>
+    </section>
+
+    <!-- Feed / Profiles widget -->
+    <section class="panel" id="feedProfiles">
+        <h2>Profiles Feed</h2>
+        <div id="profilesList" style="display:flex;gap:12px;flex-wrap:wrap"></div>
+    </section>
    
     
 <br>
@@ -613,6 +640,122 @@
             <span class="whatsapp-subtitle">WhatsApp +256771895378</span>
         </span>
     </a>
+
+    <script>
+        // Booking form client: posts to /book on local server
+        (function(){
+            const bookingForm = document.getElementById('bookingForm');
+            const bookingStatus = document.getElementById('bookingStatus');
+            const syncBtn = document.getElementById('syncBtn');
+
+            bookingForm && bookingForm.addEventListener('submit', async function(e){
+                e.preventDefault();
+                bookingStatus.textContent = 'Sending...';
+                const payload = {
+                    name: document.getElementById('bkName').value,
+                    email: document.getElementById('bkEmail').value,
+                    phone: document.getElementById('bkPhone').value,
+                    property: document.getElementById('bkProperty').value,
+                    message: document.getElementById('bkMessage').value,
+                    page: window.location.pathname
+                };
+                try {
+                    const res = await fetch('/book', {
+                        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+                    });
+                    const j = await res.json();
+                    if (res.ok) {
+                        bookingStatus.style.color = '#86efac';
+                        bookingStatus.textContent = 'Sent — thanks!';
+                        bookingForm.reset();
+                    } else {
+                        bookingStatus.style.color = '#fca5a5';
+                        bookingStatus.textContent = j && j.error ? j.error : 'Failed to send';
+                    }
+                } catch (err) {
+                    bookingStatus.style.color = '#fca5a5';
+                    bookingStatus.textContent = 'Server unavailable';
+                }
+                setTimeout(()=>bookingStatus.textContent = '', 5000);
+            });
+
+            // Sync button triggers /sync which will attempt git add/commit/push on the host
+            syncBtn && syncBtn.addEventListener('click', async function(){
+                bookingStatus.textContent = 'Syncing...';
+                try {
+                    const res = await fetch('/sync', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({message: 'Website sync via UI'})});
+                    const j = await res.json();
+                    if (res.ok) {
+                        bookingStatus.style.color = '#86efac';
+                        bookingStatus.textContent = 'Synced: ' + (j && j.result ? j.result : 'OK');
+                    } else {
+                        bookingStatus.style.color = '#fca5a5';
+                        bookingStatus.textContent = j && j.error ? j.error : 'Sync failed';
+                    }
+                } catch (err) {
+                    bookingStatus.style.color = '#fca5a5';
+                    bookingStatus.textContent = 'Sync server unavailable';
+                }
+                setTimeout(()=>bookingStatus.textContent = '', 6000);
+            });
+        })();
+
+        // Simple profiles feed stored in localStorage — shows followers/following counts
+        (function(){
+            const DEFAULT_PROFILES = [
+                {id:'owner', name:'Latrat Properties', following:12, followers:124},
+                {id:'agent1', name:'Ehsan Realtor', following:34, followers:420},
+                {id:'agent2', name:'Kakiri Homes', following:8, followers:98}
+            ];
+            const key = 'latrat_profiles_v1';
+            function loadProfiles(){
+                const raw = localStorage.getItem(key);
+                if (!raw) { localStorage.setItem(key, JSON.stringify(DEFAULT_PROFILES)); return DEFAULT_PROFILES; }
+                try { return JSON.parse(raw); } catch(e){ localStorage.setItem(key, JSON.stringify(DEFAULT_PROFILES)); return DEFAULT_PROFILES; }
+            }
+            function saveProfiles(p){ localStorage.setItem(key, JSON.stringify(p)); }
+            function render(){
+                const list = document.getElementById('profilesList');
+                if (!list) return;
+                const profiles = loadProfiles();
+                list.innerHTML = '';
+                profiles.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'profile-card';
+                    card.style.minWidth = '220px';
+                    card.style.display = 'flex';
+                    card.style.flexDirection = 'column';
+                    card.style.gap = '6px';
+                    card.style.padding = '10px';
+                    card.style.borderRadius = '8px';
+                    card.style.background = 'rgba(255,255,255,0.02)';
+                    card.innerHTML = `
+                        <strong>${p.name}</strong>
+                        <div>Followers: <span data-id="${p.id}" class="followers">${p.followers}</span></div>
+                        <div>Following: <span class="following">${p.following}</span></div>
+                        <div style="display:flex;gap:8px;margin-top:6px">
+                            <button class="button small followBtn" data-id="${p.id}">${p._followState ? 'Unfollow' : 'Follow'}</button>
+                        </div>
+                    `;
+                    list.appendChild(card);
+                });
+                document.querySelectorAll('.followBtn').forEach(btn => {
+                    btn.addEventListener('click', function(){
+                        const id = this.dataset.id;
+                        const profiles = loadProfiles();
+                        const idx = profiles.findIndex(x=>x.id===id);
+                        if (idx === -1) return;
+                        const p = profiles[idx];
+                        // toggle follow locally
+                        if (!p._followState) { p.followers = (p.followers||0)+1; p._followState = true; this.textContent = 'Unfollow'; }
+                        else { p.followers = Math.max(0,(p.followers||1)-1); p._followState = false; this.textContent = 'Follow'; }
+                        saveProfiles(profiles); render();
+                    });
+                });
+            }
+            render();
+        })();
+    </script>
 
     <script>
         (function(){
